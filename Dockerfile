@@ -1,7 +1,6 @@
-#Springboot dockerfile
+FROM maven:3.8.1-openjdk-17-slim
+WORKDIR /
+COPY . .
+RUN mvn clean install
 
-# Pull base image
-FROM eclipse-temurin:17-jdk-alpine
-COPY . /app
-WORKDIR /app
-CMD ["/app/mvnw", "spring-boot:run"]
+CMD mvn spring-boot:run
