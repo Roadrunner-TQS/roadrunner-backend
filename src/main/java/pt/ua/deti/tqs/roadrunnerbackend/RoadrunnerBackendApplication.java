@@ -9,7 +9,4 @@ public class RoadrunnerBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(RoadrunnerBackendApplication.class, args);
     }
-
 }
-
-
