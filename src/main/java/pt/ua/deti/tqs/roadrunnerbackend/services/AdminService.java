@@ -32,11 +32,28 @@ public class AdminService {
 
 
     public Object getPackages(String state){
-        return null;
+        log.info("Admin service -- getPackages -- request received");
+        if (!Status.contains(state) && state != null) {
+            log.error("Admin service -- getPackages -- State not valid");
+            return new ErrorDTO("State not valid");
+        }
+        if (state == null) {
+            log.info("Admin service -- getPackages -- Sucess (without state)");
+            return packageRepository.findAll();
+        }
+        log.info("Admin service -- getPackages -- Sucess (with state)");
+        return packageRepository.findByStatus(Status.valueOf(state));
     }
 
     public Object getPackageById(UUID packageId){
-        return null;
+        log.info("Admin service -- getPackageById -- request received");
+         Package pack = packageRepository.findById(packageId).orElse(null);
+        if (pack == null) {
+            log.error("Admin service -- getPackageById -- Package not found");
+            return new ErrorDTO("Package not found");
+        }
+        log.info("Admin service -- getPackageById -- Package found");
+        return pack;
     }
 
     public Object getShops() {
