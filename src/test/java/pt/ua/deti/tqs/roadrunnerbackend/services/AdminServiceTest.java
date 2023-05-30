@@ -91,7 +91,6 @@ class AdminServiceTest {
 
         pickUpLocations = List.of(pickUpLocation, pickUpLocation2, pickUpLocation3);
 
-
         when(packageRepository.findAll()).thenReturn(packs);
         when(packageRepository.findByStatus(Status.CANCELLED)).thenReturn(packs);
 
@@ -106,13 +105,16 @@ class AdminServiceTest {
         when(shopRepository.findByIdAndDisabled(invalidId, false)).thenReturn(Optional.empty());
         when(packageRepository.findAllByShopId(shops.get(0).getId())).thenReturn(packs);
 
-        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(0).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(0)));
+        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(0).getId(), false))
+                .thenReturn(Optional.ofNullable(pickUpLocations.get(0)));
         when(packageRepository.findByPickUpLocation(pickUpLocations.get(0))).thenReturn(packs);
 
-        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(1).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(1)));
+        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(1).getId(), false))
+                .thenReturn(Optional.ofNullable(pickUpLocations.get(1)));
         when(packageRepository.findByPickUpLocation(pickUpLocations.get(1))).thenReturn(packs);
 
-        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(2).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(2)));
+        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(2).getId(), false))
+                .thenReturn(Optional.ofNullable(pickUpLocations.get(2)));
         when(packageRepository.findByPickUpLocation(pickUpLocations.get(2))).thenReturn(packs);
         when(userRepository.findByPickUpLocation(pickUpLocations.get(0))).thenReturn(Optional.of(user));
         when(userRepository.findByPickUpLocation(pickUpLocations.get(1))).thenReturn(Optional.of(user2));
@@ -120,11 +122,28 @@ class AdminServiceTest {
 
         when(pickUpLocationRepository.findByDisable(false)).thenReturn(pickUpLocations);
         when(pickUpLocationRepository.findByCityAndDisable("city", false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city",false,false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city",true,false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByAcceptedAndDisable(true,false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByAcceptedAndDisable(false,false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city", false, false))
+                .thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city", true, false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByAcceptedAndDisable(true, false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByAcceptedAndDisable(false, false)).thenReturn(pickUpLocations);
 
+    }
+
+    @Test
+    @DisplayName("Test getPackagesByPickUpLocation -- Invalid id")
+    void testGetPackagesByPickUpLocationInvalid() {
+        Object result = adminServiceMock.getPackagesByPickUpLocation(invalidId);
+        MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
+        assertEquals("PickUpLocation not found", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getPackagesByPickUpLocation -- Valid id")
+    void testGetPackagesByPickUpLocationValid() {
+        Object result = adminServiceMock.getPackagesByPickUpLocation(pickUpLocations.get(0).getId());
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(packs, result);
     }
 
     @Test
@@ -182,11 +201,61 @@ class AdminServiceTest {
         MatcherAssert.assertThat(result, instanceOf(SuccessDTO.class));
         assertEquals("PickUpLocation accepted", ((SuccessDTO<?>) result).getMessage());
     }
+
     @Test
     @DisplayName("Test acceptedPickUpLocation -- Valid id but the userNotFound")
     void testAcceptedPickUpLocationValidUserNotFound() {
         Object result = adminServiceMock.acceptedPickUpLocation(pickUpLocations.get(2).getId());
         MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
         assertEquals("User not found", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getPickUpLocationById -- Invalid id")
+    void testGetPickUpLocationByIdInvalid() {
+        Object result = adminServiceMock.getPickUpLocationById(invalidId);
+        MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
+        assertEquals("PickUpLocation not found", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getPickUpLocationById -- Valid id")
+    void testGetPickUpLocationByIdValid() {
+        Object result = adminServiceMock.getPickUpLocationById(pickUpLocations.get(0).getId());
+        MatcherAssert.assertThat(result, instanceOf(PickUpLocation.class));
+        assertEquals(pickUpLocations.get(0), result);
+    }
+
+    @Test
+    @DisplayName("Test getPickUpLocations -- without parameters")
+    void testGetPickUpLocationsWithoutParameters() {
+        Object result = adminServiceMock.getPickUpLocations(null, null);
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(pickUpLocations, result);
+    }
+
+    @Test
+    @DisplayName("Test getPickUpLocations -- with city parameter and without accepted parameter")
+    void testGetPickUpLocationsWithCityParameter() {
+        Object result = adminServiceMock.getPickUpLocations("city", null);
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(pickUpLocations, result);
+    }
+
+    @Test
+    @DisplayName("Test getPickUpLocations -- with city parameter and with accepted parameter")
+    void testGetPickUpLocationsWithCityAndAcceptedParameter() {
+        Object result = adminServiceMock.getPickUpLocations("city", true);
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(pickUpLocations, result);
+    }
+
+    @Test
+    @DisplayName("Test getPickUpLocations -- with accepted parameter")
+    void testGetPickUpLocationsWithAcceptedParameter() {
+        Object result = adminServiceMock.getPickUpLocations(null, true);
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(pickUpLocations, result);
+
     }
 }
