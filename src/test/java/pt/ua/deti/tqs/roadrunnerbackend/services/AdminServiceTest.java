@@ -91,30 +91,28 @@ class AdminServiceTest {
 
         pickUpLocations = List.of(pickUpLocation, pickUpLocation2, pickUpLocation3);
 
+
         when(packageRepository.findAll()).thenReturn(packs);
         when(packageRepository.findByStatus(Status.CANCELLED)).thenReturn(packs);
 
-        when(packageRepository.findById(pack.getId())).thenReturn(Optional.of(pack));
-        when(packageRepository.findById(invalidId)).thenReturn(Optional.empty());
+        when(packageRepository.findById(pack.getId())).thenReturn(java.util.Optional.of(pack));
+        when(packageRepository.findById(invalidId)).thenReturn(java.util.Optional.empty());
 
         when(shopRepository.findALLByDisabled(false)).thenReturn(shops);
         when(shopRepository.save(shop)).thenReturn(shop);
         when(shopRepository.save(shop2)).thenReturn(shop2);
 
-        when(shopRepository.findByIdAndDisabled(shops.get(0).getId(), false)).thenReturn(Optional.of(shop));
-        when(shopRepository.findByIdAndDisabled(invalidId, false)).thenReturn(Optional.empty());
+        when(shopRepository.findByIdAndDisabled(shops.get(0).getId(), false)).thenReturn(java.util.Optional.of(shop));
+        when(shopRepository.findByIdAndDisabled(invalidId, false)).thenReturn(java.util.Optional.empty());
         when(packageRepository.findAllByShopId(shops.get(0).getId())).thenReturn(packs);
 
-        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(0).getId(), false))
-                .thenReturn(Optional.ofNullable(pickUpLocations.get(0)));
+        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(0).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(0)));
         when(packageRepository.findByPickUpLocation(pickUpLocations.get(0))).thenReturn(packs);
 
-        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(1).getId(), false))
-                .thenReturn(Optional.ofNullable(pickUpLocations.get(1)));
+        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(1).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(1)));
         when(packageRepository.findByPickUpLocation(pickUpLocations.get(1))).thenReturn(packs);
 
-        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(2).getId(), false))
-                .thenReturn(Optional.ofNullable(pickUpLocations.get(2)));
+        when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(2).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(2)));
         when(packageRepository.findByPickUpLocation(pickUpLocations.get(2))).thenReturn(packs);
         when(userRepository.findByPickUpLocation(pickUpLocations.get(0))).thenReturn(Optional.of(user));
         when(userRepository.findByPickUpLocation(pickUpLocations.get(1))).thenReturn(Optional.of(user2));
@@ -122,12 +120,51 @@ class AdminServiceTest {
 
         when(pickUpLocationRepository.findByDisable(false)).thenReturn(pickUpLocations);
         when(pickUpLocationRepository.findByCityAndDisable("city", false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city", false, false))
-                .thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city", true, false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByAcceptedAndDisable(true, false)).thenReturn(pickUpLocations);
-        when(pickUpLocationRepository.findByAcceptedAndDisable(false, false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city",false,false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByCityAndAcceptedAndDisable("city",true,false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByAcceptedAndDisable(true,false)).thenReturn(pickUpLocations);
+        when(pickUpLocationRepository.findByAcceptedAndDisable(false,false)).thenReturn(pickUpLocations);
 
+    }
+
+    @Test
+    @DisplayName("Test getPackages -- State not valid")
+    void testGetPackagesStateNotValid() {
+        Object result = adminServiceMock.getPackages("state");
+        MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
+        assertEquals("State not valid", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getPackages -- State null")
+    void testGetPackagesStateNull() {
+        Object result = adminServiceMock.getPackages(null);
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(packs, result);
+    }
+
+    @Test
+    @DisplayName("Test getPackages -- State CANCELLED")
+    void testGetPackagesStateCancelled() {
+        Object result = adminServiceMock.getPackages("CANCELLED");
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(packs, result);
+    }
+
+    @Test
+    @DisplayName("Test getPackagesbyId -- Id not valid")
+    void testGetPackagesbyIdNotValid() {
+        Object result = adminServiceMock.getPackageById(invalidId);
+        MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
+        assertEquals("Package not found", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getPackagesbyId -- Id valid")
+    void testGetPackagesbyIdValid() {
+        Object result = adminServiceMock.getPackageById(packs.get(0).getId());
+        MatcherAssert.assertThat(result, instanceOf(Package.class));
+        assertEquals(packs.get(0), result);
     }
 
     @Test
