@@ -26,7 +26,15 @@ public class AdminService {
     private final UserRepository userRepository;
     private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
     public Object getPackagesByPickUpLocation(UUID id){
-        return null;
+        log.info("Admin service -- getPackagesByPickUpLocation -- request received");
+
+        PickUpLocation pickUpLocation = pickUpLocationRepository.findByIdAndDisable(id,false).orElse(null);
+        if (pickUpLocation == null) {
+            log.error("Admin service -- getPackagesByPickUpLocation -- PickUpLocation not found");
+            return ERROR_PICKUP;
+        }
+        log.info("Admin service -- getPackagesByPickUpLocation -- Sucess");
+        return packageRepository.findByPickUpLocation(pickUpLocation);
     }
 
     public Object deletePickUpLocation(UUID pickUpLocationId) {
@@ -77,11 +85,32 @@ public class AdminService {
     }
 
     public Object getPickUpLocationById(UUID pickUpLocationId) {
-        return null;
+        log.info("Admin service -- getPickUpLocationById -- request received");
+        PickUpLocation pickUpLocation = pickUpLocationRepository.findByIdAndDisable(pickUpLocationId, false).orElse(null);
+        if (pickUpLocation == null) {
+            log.error("Admin service -- getPickUpLocationById -- PickUpLocation not found");
+            return ERROR_PICKUP;
+        }
+        log.info("Admin service -- getPickUpLocationById -- PickUpLocation found");
+        return pickUpLocation;
     }
 
     public Object getPickUpLocations(String city, Boolean accepted){
-        return null;
+        log.info("RoadRunnerService -- getPickUpLocations -- request received");
+        if (city == null && accepted == null) {
+            log.info("RoadRunnerService-- getPickUpLocations -- Sucess (without city and accepted)");
+            return pickUpLocationRepository.findByDisable(false);
+        }
+        if (city == null) {
+            log.error("RoadRunnerService-- getPickUpLocations -- Without city");
+            return pickUpLocationRepository.findByAcceptedAndDisable(accepted, false);
+        }
+        if (accepted == null) {
+            log.error("RoadRunnerService -- getPickUpLocations -- Without accepted");
+            return pickUpLocationRepository.findByCityAndDisable(city, false);
+        }
+        log.error("RoadRunnerService -- getPickUpLocations -- With city and accepted");
+        return pickUpLocationRepository.findByCityAndAcceptedAndDisable(city, accepted, false);
     }
 
 }
