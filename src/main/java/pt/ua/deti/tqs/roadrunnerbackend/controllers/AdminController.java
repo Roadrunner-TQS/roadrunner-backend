@@ -65,14 +65,36 @@ public class AdminController {
     public ResponseEntity<Object> getPickUpLocations(@RequestHeader("Authorization") String token,
                                                      @RequestParam(value="city", required = false) String city,
                                                      @RequestParam(value="accepted", required = false) Boolean accepted) {
-        return null;
+        log.info("RoadRunnerController -- Get pick up locations -- request received");
+        Object response = adminService.getPickUpLocations(city, accepted);
+        if (response instanceof ErrorDTO) {
+            log.error("RoadRunnerController -- Get pick up locations -- " + ((ErrorDTO) response).getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(APPLICATION_JSON)
+                    .body(response);
+        }
+        log.info("RoadRunnerController -- Get pick up locations -- pick Up Locations found");
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(APPLICATION_JSON)
+                .body(response);
     }
 
     @PreAuthorize("@authService.isAdmin(#token)")
     @GetMapping("/pickup/package")
     public ResponseEntity<Object> getPackagesByPickUpLocation(@RequestHeader("Authorization") String token,
                                                               @RequestParam(value="pickupId") UUID pickupId){
-        return null;
+        log.info("RoadRunnerController -- Get packages by pick up location -- request received");
+        Object response = adminService.getPackagesByPickUpLocation(pickupId);
+        if (response instanceof ErrorDTO) {
+            log.error("RoadRunnerController -- Get packages by pick up location -- " + ((ErrorDTO) response).getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(APPLICATION_JSON)
+                    .body(response);
+        }
+        log.info("RoadRunnerController -- Get packages by pick up location -- Packages found");
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(APPLICATION_JSON)
+                .body(response);
     }
 
 }
