@@ -22,7 +22,7 @@ public class PartnerService {
 
 
     public Object getAllPackages(UUID partnerId, String state) {
-        return null;
+       return null;
     }
 
     public Object getPackageById(UUID pickUpLocationId, UUID packageId) {
