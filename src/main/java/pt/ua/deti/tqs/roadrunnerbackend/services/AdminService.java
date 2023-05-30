@@ -8,11 +8,13 @@ import pt.ua.deti.tqs.roadrunnerbackend.data.PickUpLocationRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.ShopRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.UserRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.model.PickUpLocation;
+import pt.ua.deti.tqs.roadrunnerbackend.model.Shop;
 import pt.ua.deti.tqs.roadrunnerbackend.model.User;
 import pt.ua.deti.tqs.roadrunnerbackend.model.dto.ErrorDTO;
 import pt.ua.deti.tqs.roadrunnerbackend.model.dto.SuccessDTO;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Roles;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -25,6 +27,25 @@ public class AdminService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
+    public Object getShops() {
+        return null;
+    }
+
+    public Shop addShop(Shop shop) {
+        return null;
+    }
+
+    public Object getShopById(UUID shopId) {
+        return null;
+    }
+
+    public Boolean deleteShop(UUID shopId) {
+        return null;
+    }
+
+    public Object getPackagesByShop(UUID shopId) {
+        return null;
+    }
     public Object getPackagesByPickUpLocation(UUID id){
         log.info("Admin service -- getPackagesByPickUpLocation -- request received");
 
