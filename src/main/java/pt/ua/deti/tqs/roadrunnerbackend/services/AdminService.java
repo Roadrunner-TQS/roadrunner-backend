@@ -28,23 +28,58 @@ public class AdminService {
     private final UserRepository userRepository;
     private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
     public Object getShops() {
-        return null;
+        log.info("Admin service -- getShops -- request received");
+        List<Shop> shops = shopRepository.findALLByDisabled(false);
+        log.info("Admin service -- getShops -- Sucess");
+        return shops;
     }
 
     public Shop addShop(Shop shop) {
-        return null;
+        log.info("Admin service -- addShop -- request received");
+        try {
+            shop.setSlugs(shop.getName().toLowerCase().replaceAll("\\s+", "-"));
+            shopRepository.save(shop);
+            log.info("Admin service -- addShop -- Shop added");
+            return shop;
+        } catch (Exception e) {
+            log.error("Admin service -- addShop -- Error adding shop");
+            return null;
+        }
     }
 
     public Object getShopById(UUID shopId) {
-        return null;
+        log.info("Admin service -- getShop -- request received");
+        Shop shop = shopRepository.findByIdAndDisabled(shopId, false).orElse(null);
+        if (shop == null) {
+            log.error("Admin service -- getShop -- Shop not found");
+            return new ErrorDTO("Shop not found");
+        }
+        log.info("Admin service -- getShop -- Shop found");
+        return shop;
     }
 
     public Boolean deleteShop(UUID shopId) {
-        return null;
+        log.info("Admin service -- deleteShop -- request received");
+        Shop shop = shopRepository.findByIdAndDisabled(shopId, false).orElse(null);
+        if (shop == null) {
+            log.error("Admin service -- deleteShop -- Shop not found");
+            return false;
+        }
+        shop.setDisabled(true);
+        shopRepository.save(shop);
+        log.info("Admin service -- deleteShop -- Shop deleted");
+        return true;
     }
 
     public Object getPackagesByShop(UUID shopId) {
-        return null;
+        log.info("Admin service -- getPackagesByShop -- request received");
+        Shop shop = shopRepository.findByIdAndDisabled(shopId,false).orElse(null);
+        if (shop == null) {
+            log.error("Admin service -- getPackagesByShop -- Shop not found");
+            return new ErrorDTO("Shop not found");
+        }
+        log.info("Admin service -- getPackagesByShop -- Sucess");
+        return packageRepository.findAllByShopId(shopId);
     }
     public Object getPackagesByPickUpLocation(UUID id){
         log.info("Admin service -- getPackagesByPickUpLocation -- request received");
