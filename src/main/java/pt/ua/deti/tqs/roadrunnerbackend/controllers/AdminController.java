@@ -23,6 +23,40 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    @GetMapping("/shop")
+    @PreAuthorize("@authService.isAdmin(#token)")
+    public ResponseEntity<Object> getShops(@RequestHeader("Authorization") String token) {
+        return null;
+    }
+
+    @PostMapping("/shop")
+    @PreAuthorize("@authService.isAdmin(#token)")
+    public ResponseEntity<Object> addShop(@RequestHeader("Authorization") String token,
+                                          @RequestBody Shop shopRequest) {
+        return null;
+    }
+
+    @GetMapping("/shop/{id}")
+    @PreAuthorize("@authService.isAdmin(#token)")
+    public ResponseEntity<Object> getShop(@RequestHeader("Authorization") String token,
+                                          @PathVariable UUID id){
+        return null;
+    }
+
+    @DeleteMapping("/shop/{id}")
+    @PreAuthorize("@authService.isAdmin(#token)")
+    public ResponseEntity<Object> deleteShop(@RequestHeader("Authorization") String token,
+                                             @PathVariable UUID id) {
+        return null;
+    }
+
+    @GetMapping("/shop/package")
+    @PreAuthorize("@authService.isAdmin(#token)")
+    public ResponseEntity<Object> getPackagesByShop(@RequestHeader("Authorization") String token,
+                                                    @RequestParam(value="id") UUID id){
+        return null;
+    }
+
     @DeleteMapping("/pickup/{id}")
     @PreAuthorize("@authService.isAdmin(#token)")
     public ResponseEntity<Object> deletePickUpLocation(@RequestHeader("Authorization") String token,
