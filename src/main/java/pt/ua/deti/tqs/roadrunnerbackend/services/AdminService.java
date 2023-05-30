@@ -8,11 +8,13 @@ import pt.ua.deti.tqs.roadrunnerbackend.data.PickUpLocationRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.ShopRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.UserRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.model.PickUpLocation;
+import pt.ua.deti.tqs.roadrunnerbackend.model.Shop;
 import pt.ua.deti.tqs.roadrunnerbackend.model.User;
 import pt.ua.deti.tqs.roadrunnerbackend.model.dto.ErrorDTO;
 import pt.ua.deti.tqs.roadrunnerbackend.model.dto.SuccessDTO;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Roles;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -25,6 +27,60 @@ public class AdminService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
+    public Object getShops() {
+        log.info("Admin service -- getShops -- request received");
+        List<Shop> shops = shopRepository.findALLByDisabled(false);
+        log.info("Admin service -- getShops -- Sucess");
+        return shops;
+    }
+
+    public Shop addShop(Shop shop) {
+        log.info("Admin service -- addShop -- request received");
+        try {
+            shop.setSlugs(shop.getName().toLowerCase().replaceAll("\\s+", "-"));
+            shopRepository.save(shop);
+            log.info("Admin service -- addShop -- Shop added");
+            return shop;
+        } catch (Exception e) {
+            log.error("Admin service -- addShop -- Error adding shop");
+            return null;
+        }
+    }
+
+    public Object getShopById(UUID shopId) {
+        log.info("Admin service -- getShop -- request received");
+        Shop shop = shopRepository.findByIdAndDisabled(shopId, false).orElse(null);
+        if (shop == null) {
+            log.error("Admin service -- getShop -- Shop not found");
+            return new ErrorDTO("Shop not found");
+        }
+        log.info("Admin service -- getShop -- Shop found");
+        return shop;
+    }
+
+    public Boolean deleteShop(UUID shopId) {
+        log.info("Admin service -- deleteShop -- request received");
+        Shop shop = shopRepository.findByIdAndDisabled(shopId, false).orElse(null);
+        if (shop == null) {
+            log.error("Admin service -- deleteShop -- Shop not found");
+            return false;
+        }
+        shop.setDisabled(true);
+        shopRepository.save(shop);
+        log.info("Admin service -- deleteShop -- Shop deleted");
+        return true;
+    }
+
+    public Object getPackagesByShop(UUID shopId) {
+        log.info("Admin service -- getPackagesByShop -- request received");
+        Shop shop = shopRepository.findByIdAndDisabled(shopId,false).orElse(null);
+        if (shop == null) {
+            log.error("Admin service -- getPackagesByShop -- Shop not found");
+            return new ErrorDTO("Shop not found");
+        }
+        log.info("Admin service -- getPackagesByShop -- Sucess");
+        return packageRepository.findAllByShopId(shopId);
+    }
     public Object getPackagesByPickUpLocation(UUID id){
         log.info("Admin service -- getPackagesByPickUpLocation -- request received");
 

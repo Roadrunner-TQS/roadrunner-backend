@@ -22,7 +22,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().ignoringRequestMatchers(request -> "/api/**".equals(request.getRequestURI())).and()
+                .csrf().ignoringRequestMatchers(request -> true).and()
                 .cors().and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/**").permitAll()

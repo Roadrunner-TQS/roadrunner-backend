@@ -131,6 +131,75 @@ class AdminServiceTest {
     }
 
     @Test
+    @DisplayName("Test getShops")
+    void testGetShops() {
+        Object result = adminServiceMock.getShops();
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(shops, result);
+    }
+
+    @Test
+    @DisplayName("Test addShop -- Invalid shop")
+    void testAddShopInvalid() {
+        Shop result = adminServiceMock.addShop(shop2);
+        assertNull(result);
+    }
+
+    @Test
+    @DisplayName("Test addShop -- Valid shop")
+    void testAddShopValid() {
+        Shop result = adminServiceMock.addShop(shops.get(0));
+        assertEquals(shops.get(0), result);
+    }
+
+    @Test
+    @DisplayName("Test getShopById -- Invalid id")
+    void testGetShopByIdInvalid() {
+        Object result = adminServiceMock.getShopById(invalidId);
+        MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
+        assertEquals("Shop not found", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getShopById -- Valid id")
+    void testGetShopByIdValid() {
+        Object result = adminServiceMock.getShopById(shops.get(0).getId());
+        MatcherAssert.assertThat(result, instanceOf(Shop.class));
+        assertEquals(shops.get(0), result);
+    }
+
+    @Test
+    @DisplayName("Test deleteShopById -- Invalid id")
+    void testDeleteShopByIdInvalid() {
+        Boolean result = adminServiceMock.deleteShop(invalidId);
+        assertEquals(false, result);
+    }
+
+    @Test
+    @DisplayName("Test deleteShopById -- Valid id")
+    void testDeleteShopByIdValid() {
+        Boolean result = adminServiceMock.deleteShop(shops.get(0).getId());
+        assertEquals(true, result);
+    }
+
+
+    @Test
+    @DisplayName("Test getPackagesByShop -- Invalid id")
+    void testGetPackagesByShopInvalid() {
+        Object result = adminServiceMock.getPackagesByShop(invalidId);
+        MatcherAssert.assertThat(result, instanceOf(ErrorDTO.class));
+        assertEquals("Shop not found", ((ErrorDTO) result).getMessage());
+    }
+
+    @Test
+    @DisplayName("Test getPackagesByShop -- Valid id")
+    void testGetPackagesByShopValid() {
+        Object result = adminServiceMock.getPackagesByShop(shops.get(0).getId());
+        MatcherAssert.assertThat(result, instanceOf(List.class));
+        assertEquals(packs, result);
+    }
+
+    @Test
     @DisplayName("Test getPackagesByPickUpLocation -- Invalid id")
     void testGetPackagesByPickUpLocationInvalid() {
         Object result = adminServiceMock.getPackagesByPickUpLocation(invalidId);
@@ -201,7 +270,6 @@ class AdminServiceTest {
         MatcherAssert.assertThat(result, instanceOf(SuccessDTO.class));
         assertEquals("PickUpLocation accepted", ((SuccessDTO<?>) result).getMessage());
     }
-
     @Test
     @DisplayName("Test acceptedPickUpLocation -- Valid id but the userNotFound")
     void testAcceptedPickUpLocationValidUserNotFound() {
@@ -256,6 +324,5 @@ class AdminServiceTest {
         Object result = adminServiceMock.getPickUpLocations(null, true);
         MatcherAssert.assertThat(result, instanceOf(List.class));
         assertEquals(pickUpLocations, result);
-
     }
 }
