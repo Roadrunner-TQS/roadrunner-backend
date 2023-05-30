@@ -7,12 +7,14 @@ import pt.ua.deti.tqs.roadrunnerbackend.data.PackageRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.PickUpLocationRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.ShopRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.UserRepository;
+import pt.ua.deti.tqs.roadrunnerbackend.model.Package;
 import pt.ua.deti.tqs.roadrunnerbackend.model.PickUpLocation;
 import pt.ua.deti.tqs.roadrunnerbackend.model.Shop;
 import pt.ua.deti.tqs.roadrunnerbackend.model.User;
 import pt.ua.deti.tqs.roadrunnerbackend.model.dto.ErrorDTO;
 import pt.ua.deti.tqs.roadrunnerbackend.model.dto.SuccessDTO;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Roles;
+import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Status;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,16 @@ public class AdminService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
+
+
+    public Object getPackages(String state){
+        return null;
+    }
+
+    public Object getPackageById(UUID packageId){
+        return null;
+    }
+
     public Object getShops() {
         log.info("Admin service -- getShops -- request received");
         List<Shop> shops = shopRepository.findALLByDisabled(false);
@@ -81,6 +93,7 @@ public class AdminService {
         log.info("Admin service -- getPackagesByShop -- Sucess");
         return packageRepository.findAllByShopId(shopId);
     }
+
     public Object getPackagesByPickUpLocation(UUID id){
         log.info("Admin service -- getPackagesByPickUpLocation -- request received");
 
@@ -101,8 +114,8 @@ public class AdminService {
             return ERROR_PICKUP;
         }
         User user = userRepository.findByPickUpLocation(pickUpLocation).orElse(null);
-        log.info("Admin service -- deletePickUpLocation -- PickUpLocation found");
-        log.info("Admin service -- deletePickUpLocation -- " + user);
+       log.info("Admin service -- deletePickUpLocation -- PickUpLocation found");
+       log.info("Admin service -- deletePickUpLocation -- " + user);
         if (user != null && user.getRole() != Roles.ROLE_ADMIN) {
             user.setRole(Roles.ROLE_DELETE);
             userRepository.save(user);
@@ -166,7 +179,6 @@ public class AdminService {
             return pickUpLocationRepository.findByCityAndDisable(city, false);
         }
         log.error("RoadRunnerService -- getPickUpLocations -- With city and accepted");
-        return pickUpLocationRepository.findByCityAndAcceptedAndDisable(city, accepted, false);
+            return pickUpLocationRepository.findByCityAndAcceptedAndDisable(city, accepted, false);
     }
-
 }
