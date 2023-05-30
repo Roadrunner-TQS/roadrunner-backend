@@ -7,6 +7,11 @@ import pt.ua.deti.tqs.roadrunnerbackend.data.PackageRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.PickUpLocationRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.ShopRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.UserRepository;
+import pt.ua.deti.tqs.roadrunnerbackend.model.PickUpLocation;
+import pt.ua.deti.tqs.roadrunnerbackend.model.User;
+import pt.ua.deti.tqs.roadrunnerbackend.model.dto.ErrorDTO;
+import pt.ua.deti.tqs.roadrunnerbackend.model.dto.SuccessDTO;
+import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Roles;
 
 import java.util.UUID;
 
@@ -19,13 +24,53 @@ public class AdminService {
     private final PickUpLocationRepository pickUpLocationRepository;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
+    private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
 
     public Object deletePickUpLocation(UUID pickUpLocationId) {
-        return null;
+        log.info("Admin service -- deletePickUpLocation -- request received");
+        PickUpLocation pickUpLocation = pickUpLocationRepository.findByIdAndDisable(pickUpLocationId, false).orElse(null);
+        if (pickUpLocation == null) {
+            log.error("Admin service -- deletePickUpLocation -- PickUpLocation not found");
+            return ERROR_PICKUP;
+        }
+        User user = userRepository.findByPickUpLocation(pickUpLocation).orElse(null);
+        log.info("Admin service -- deletePickUpLocation -- PickUpLocation found");
+        log.info("Admin service -- deletePickUpLocation -- " + user);
+        if (user != null && user.getRole() != Roles.ROLE_ADMIN) {
+            user.setRole(Roles.ROLE_DELETE);
+            userRepository.save(user);
+            pickUpLocation.setDisable(true);
+            pickUpLocationRepository.save(pickUpLocation);
+            log.info("Admin service -- deletePickUpLocation -- Sucess");
+            return new SuccessDTO<String>("PickUpLocation deleted");
+        }
+        log.error("Admin service -- deletePickUpLocation -- PickUpLocation has no user");
+        log.error("Admin service -- deletePickUpLocation -- Error to delete PickUpLocation");
+        return new ErrorDTO("Error to delete PickUpLocation");
     }
 
     public Object acceptedPickUpLocation(UUID pickUpLocationId) {
-        return null;
+        log.info("Admin service -- acceptedPickUpLocation -- request received");
+        PickUpLocation pickUpLocation = pickUpLocationRepository.findByIdAndDisable(pickUpLocationId, false).orElse(null);
+        if (pickUpLocation == null) {
+            log.error("Admin service -- acceptedPickUpLocation -- PickUpLocation not found");
+            return ERROR_PICKUP;
+        }
+        if (Boolean.TRUE.equals(pickUpLocation.getAccepted())) {
+            log.error("Admin service -- acceptedPickUpLocation -- PickUpLocation already accepted");
+            return new ErrorDTO("PickUpLocation already accepted");
+        }
+        User user = userRepository.findByPickUpLocation(pickUpLocation).orElse(null);
+        if (user == null) {
+            log.error("Admin service -- acceptedPickUpLocation -- User not found");
+            return new ErrorDTO("User not found");
+        }
+        user.setRole(Roles.ROLE_PARTNER);
+        pickUpLocation.setAccepted(true);
+        userRepository.save(user);
+        pickUpLocationRepository.save(pickUpLocation);
+        log.info("Admin service -- acceptedPickUpLocation -- PickUpLocation accepted");
+        return new SuccessDTO<String>("PickUpLocation accepted");
     }
 
 }
