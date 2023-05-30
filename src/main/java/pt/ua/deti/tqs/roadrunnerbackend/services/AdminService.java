@@ -25,6 +25,9 @@ public class AdminService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private static final ErrorDTO ERROR_PICKUP = new ErrorDTO("PickUpLocation not found");
+    public Object getPackagesByPickUpLocation(UUID id){
+        return null;
+    }
 
     public Object deletePickUpLocation(UUID pickUpLocationId) {
         log.info("Admin service -- deletePickUpLocation -- request received");
@@ -71,6 +74,14 @@ public class AdminService {
         pickUpLocationRepository.save(pickUpLocation);
         log.info("Admin service -- acceptedPickUpLocation -- PickUpLocation accepted");
         return new SuccessDTO<String>("PickUpLocation accepted");
+    }
+
+    public Object getPickUpLocationById(UUID pickUpLocationId) {
+        return null;
+    }
+
+    public Object getPickUpLocations(String city, Boolean accepted){
+        return null;
     }
 
 }
