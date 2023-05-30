@@ -58,13 +58,11 @@ class AdminControllerTest {
 				false);
 		pickUpLocations = List.of(pickUpLocation);
 	}
-
 	@Test
 	@DisplayName("Test deletePickUp with valid token, then return OK and SuccessDTO")
-	void whendeletePickUpWithValidToken_ReturnOKAndSucessMessage() {
+	void whendeletePickUpWithValidToken_ReturnOKAndSucessMessage(){
 		String validToken = "valid_token";
-		when(adminService.deletePickUpLocation(pickUpLocation.getId()))
-				.thenReturn(new SuccessDTO<String>("Pick Up Location removed"));
+		when(adminService.deletePickUpLocation(pickUpLocation.getId())).thenReturn(new SuccessDTO<String>("Pick Up Location removed"));
 
 		RestAssuredMockMvc.given()
 				.header("Authorization", validToken)
@@ -75,12 +73,12 @@ class AdminControllerTest {
 				.status(HttpStatus.OK)
 				.body("message", equalTo("Pick Up Location removed"));
 
-		verify(adminService, times(1)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(1)).deletePickUpLocation(any(UUID.class));
 	}
 
 	@Test
 	@DisplayName("Test deletePickUp with valid token, then return BadRequest and ErrorDTO")
-	void whendeletePickUpWithValidToken_ReturnBadRequest() {
+	void whendeletePickUpWithValidToken_ReturnBadRequest(){
 		String validToken = "valid_token";
 		when(adminService.deletePickUpLocation(pickUpLocation.getId())).thenReturn(new ErrorDTO("Error"));
 
@@ -93,15 +91,14 @@ class AdminControllerTest {
 				.status(HttpStatus.NOT_FOUND)
 				.body("message", equalTo("Error"));
 
-		verify(adminService, times(1)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(1)).deletePickUpLocation(any(UUID.class));
 	}
 
 	@Test
 	@DisplayName("Test acceptPickUpLocation with valid token, then return OK and SuccessDTO")
-	void whenacceptPickUpLocationWithValidToken_ReturnOKAndSucessMessage() {
+	void whenacceptPickUpLocationWithValidToken_ReturnOKAndSucessMessage(){
 		String validToken = "valid_token";
-		when(adminService.acceptedPickUpLocation(pickUpLocation.getId()))
-				.thenReturn(new SuccessDTO<>("Pick Up Location accepted"));
+		when(adminService.acceptedPickUpLocation(pickUpLocation.getId())).thenReturn(new SuccessDTO<>("Pick Up Location accepted"));
 
 		RestAssuredMockMvc.given()
 				.header("Authorization", validToken)
@@ -112,13 +109,13 @@ class AdminControllerTest {
 				.status(HttpStatus.OK)
 				.body("message", equalTo("Pick Up Location accepted"));
 
-		verify(adminService, times(0)).deletePickUpLocation(any(UUID.class));
-		verify(adminService, times(1)).acceptedPickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(1)).acceptedPickUpLocation(any(UUID.class));
 	}
 
 	@Test
 	@DisplayName("Test acceptPickUpLocation with valid token, then return BadRequest and ErrorDTO")
-	void whenacceptPickUpLocationWithValidToken_ReturnBadRequest() {
+	void whenacceptPickUpLocationWithValidToken_ReturnBadRequest(){
 		String validToken = "valid_token";
 		when(adminService.acceptedPickUpLocation(pickUpLocation.getId())).thenReturn(new ErrorDTO("Error"));
 
@@ -131,7 +128,93 @@ class AdminControllerTest {
 				.status(HttpStatus.NOT_FOUND)
 				.body("message", equalTo("Error"));
 
-		verify(adminService, times(0)).deletePickUpLocation(any(UUID.class));
-		verify(adminService, times(1)).acceptedPickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(1)).acceptedPickUpLocation(any(UUID.class));
+	}
+
+	@Test
+	@DisplayName("Test getPickUpLocations with valid token, then return OK and list of PickUpLocationDTO")
+	void whengetPickUpLocationsWithValidToken_ReturnOKAndPickLocations(){
+		String validToken = "valid_token";
+		when(adminService.getPickUpLocations(null, null)).thenReturn(pickUpLocations);
+
+		RestAssuredMockMvc.given()
+				.header("Authorization", validToken)
+				.contentType("application/json")
+				.when()
+				.get("api/pickup")
+				.then()
+				.status(HttpStatus.OK)
+				.body("size()", is(1))
+				.body("[0].id", equalTo(pickUpLocation.getId().toString()))
+				.body("[0].name", equalTo(pickUpLocation.getName()))
+				.body("[0].address", equalTo(pickUpLocation.getAddress()));
+
+		verify(adminService,times(0)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).acceptedPickUpLocation(any(UUID.class));
+		verify(adminService,times(1)).getPickUpLocations(any(), any());
+	}
+
+	@Test
+	@DisplayName("Test getPickUpLocations with valid token, then return BadRequest and ErrorDTO")
+	void whengetPickUpLocationsWithValidToken_ReturnBadRequest(){
+		String validToken = "valid_token";
+		when(adminService.getPickUpLocations(null, null)).thenReturn(new ErrorDTO("Error"));
+
+		RestAssuredMockMvc.given()
+				.contentType("application/json")
+				.header("Authorization", validToken)
+				.when()
+				.get("api/pickup")
+				.then()
+				.status(HttpStatus.BAD_REQUEST)
+				.body("message", equalTo("Error"));
+
+		verify(adminService,times(0)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).acceptedPickUpLocation(any(UUID.class));
+		verify(adminService,times(1)).getPickUpLocations(any(), any());
+	}
+
+	@Test
+	@DisplayName("Test getPackagesByPickUp with valid token, then return OK and list of packages")
+	void whengetPackagesByPickupWithValidToken_ReturnOKAndPackage(){
+		String validToken = "valid_token";
+		when(adminService.getPackagesByPickUpLocation(pickUpLocation.getId())).thenReturn(packages);
+
+		RestAssuredMockMvc.given()
+				.header("Authorization", validToken)
+				.contentType("application/json")
+				.when()
+				.get("api/pickup/package?pickupId=" + pickUpLocation.getId())
+				.then()
+				.status(HttpStatus.OK)
+				.body("[0].id", equalTo(packages.get(0).getId().toString()));
+
+		verify(adminService,times(0)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).acceptedPickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).getPickUpLocations(any(), any());
+		verify(adminService,times(1)).getPackagesByPickUpLocation(any(UUID.class));
+	}
+
+	@Test
+	@DisplayName("Test getPackagesByPickUp with valid token, then return BadRequest and ErrorDTO")
+	void whengetPackagesByPickUpWithValidToken_ReturnBadRequest(){
+		String validToken = "valid_token";
+		when(adminService.getPackagesByPickUpLocation(pickUpLocation.getId())).thenReturn(new ErrorDTO("Error"));
+
+		RestAssuredMockMvc.given()
+				.contentType("application/json")
+				.header("Authorization", validToken)
+				.when()
+				.get("api/pickup/package?pickupId=" + pickUpLocation.getId())
+				.then()
+				.status(HttpStatus.BAD_REQUEST)
+				.body("message", equalTo("Error"));
+
+
+		verify(adminService,times(0)).deletePickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).acceptedPickUpLocation(any(UUID.class));
+		verify(adminService,times(0)).getPickUpLocations(any(), any());
+		verify(adminService,times(1)).getPackagesByPickUpLocation(any(UUID.class));
 	}
 }
