@@ -58,4 +58,21 @@ public class AdminController {
                 .contentType(APPLICATION_JSON)
                 .body(response);
     }
+
+
+    @GetMapping("/pickup")
+    @PreAuthorize("@authService.isAdmin(#token)")
+    public ResponseEntity<Object> getPickUpLocations(@RequestHeader("Authorization") String token,
+                                                     @RequestParam(value="city", required = false) String city,
+                                                     @RequestParam(value="accepted", required = false) Boolean accepted) {
+        return null;
+    }
+
+    @PreAuthorize("@authService.isAdmin(#token)")
+    @GetMapping("/pickup/package")
+    public ResponseEntity<Object> getPackagesByPickUpLocation(@RequestHeader("Authorization") String token,
+                                                              @RequestParam(value="pickupId") UUID pickupId){
+        return null;
+    }
+
 }
