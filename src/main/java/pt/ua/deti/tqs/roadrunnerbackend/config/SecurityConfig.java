@@ -22,7 +22,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors().and().csrf().disable()
+                .cors().and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
