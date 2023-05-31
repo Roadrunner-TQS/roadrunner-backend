@@ -2,6 +2,7 @@ package pt.ua.deti.tqs.roadrunnerbackend.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import pt.ua.deti.tqs.roadrunnerbackend.data.*;
 import pt.ua.deti.tqs.roadrunnerbackend.model.Package;
@@ -80,33 +81,34 @@ public class DataInitializer implements CommandLineRunner {
             log.info("No users found, creating some...");
 
             List<User> users = new ArrayList<>();
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775a"), "admin123",
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775a"), encoder.encode("admin123"),
                     "admin1@example.com", "Maria", "Silva", Roles.ROLE_ADMIN, null));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775b"), "user123", "user1@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775b"), encoder.encode("user123"), "user1@example.com",
                     "João", "Santos", Roles.ROLE_PARTNER, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775c"), "user123", "user2@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775c"), encoder.encode("user123"), "user2@example.com",
                     "Diogo", "Martins", Roles.ROLE_PARTNER, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775b")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775d"), "user123", "user3@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775d"), encoder.encode("user123"), "user3@example.com",
                     "Rui", "Gonçalves", Roles.ROLE_PARTNER, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775c")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775e"), "user123", "user4@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775e"), encoder.encode("user123"), "user4@example.com",
                     "André", "Ramos", Roles.ROLE_NOT_VERIFIED, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775d")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775f"), "user123", "user5@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775f"), encoder.encode("user123"), "user5@example.com",
                     "Tomás", "Pereira", Roles.ROLE_NOT_VERIFIED, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775e")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7760"), "user123", "user6@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7760"), encoder.encode("user123"), "user6@example.com",
                     "Gonçalo", "Fernandes", Roles.ROLE_PARTNER, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775f")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7761"), "user123", "user7@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7761"), encoder.encode("user123"), "user7@example.com",
                     "Tiago", "Costa", Roles.ROLE_PARTNER, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7760")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7762"), "user123", "user8@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7762"), encoder.encode("user123"), "user8@example.com",
                     "Rafael", "Silva", Roles.ROLE_PARTNER, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7761")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ab7762"), "user123", "user9@example.com",
+            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ab7762"), encoder.encode("user123"), "user9@example.com",
                     "Francisco", "Sousa", Roles.ROLE_NOT_VERIFIED, pickUpLocationRepository
                             .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7762")).orElse(null)));
             userRepository.saveAll(users);
