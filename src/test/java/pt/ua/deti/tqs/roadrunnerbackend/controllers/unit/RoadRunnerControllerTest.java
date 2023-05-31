@@ -1,4 +1,4 @@
-package pt.ua.deti.tqs.roadrunnerbackend.controllers;
+package pt.ua.deti.tqs.roadrunnerbackend.controllers.unit;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package pt.ua.deti.tqs.roadrunnerbackend.controllers;
+package pt.ua.deti.tqs.roadrunnerbackend.controllers.unit;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import pt.ua.deti.tqs.roadrunnerbackend.controllers.AdminController;
 import pt.ua.deti.tqs.roadrunnerbackend.model.Customer;
 import pt.ua.deti.tqs.roadrunnerbackend.model.Package;
 import pt.ua.deti.tqs.roadrunnerbackend.model.PickUpLocation;
