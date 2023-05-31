@@ -131,8 +131,6 @@ public class AdminService {
             return ERROR_PICKUP;
         }
         User user = userRepository.findByPickUpLocation(pickUpLocation).orElse(null);
-       log.info("Admin service -- deletePickUpLocation -- PickUpLocation found");
-       log.info("Admin service -- deletePickUpLocation -- " + user);
         if (user != null && user.getRole() != Roles.ROLE_ADMIN) {
             user.setRole(Roles.ROLE_DELETE);
             userRepository.save(user);
