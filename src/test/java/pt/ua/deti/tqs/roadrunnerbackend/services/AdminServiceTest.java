@@ -95,15 +95,15 @@ class AdminServiceTest {
         when(packageRepository.findAll()).thenReturn(packs);
         when(packageRepository.findByStatus(Status.CANCELLED)).thenReturn(packs);
 
-        when(packageRepository.findById(pack.getId())).thenReturn(java.util.Optional.of(pack));
-        when(packageRepository.findById(invalidId)).thenReturn(java.util.Optional.empty());
+        when(packageRepository.findById(pack.getId())).thenReturn(Optional.of(pack));
+        when(packageRepository.findById(invalidId)).thenReturn(Optional.empty());
 
         when(shopRepository.findALLByDisabled(false)).thenReturn(shops);
         when(shopRepository.save(shop)).thenReturn(shop);
         when(shopRepository.save(shop2)).thenReturn(shop2);
 
-        when(shopRepository.findByIdAndDisabled(shops.get(0).getId(), false)).thenReturn(java.util.Optional.of(shop));
-        when(shopRepository.findByIdAndDisabled(invalidId, false)).thenReturn(java.util.Optional.empty());
+        when(shopRepository.findByIdAndDisabled(shops.get(0).getId(), false)).thenReturn(Optional.of(shop));
+        when(shopRepository.findByIdAndDisabled(invalidId, false)).thenReturn(Optional.empty());
         when(packageRepository.findAllByShopId(shops.get(0).getId())).thenReturn(packs);
 
         when(pickUpLocationRepository.findByIdAndDisable(pickUpLocations.get(0).getId(), false)).thenReturn(Optional.ofNullable(pickUpLocations.get(0)));

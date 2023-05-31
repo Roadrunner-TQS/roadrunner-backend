@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import pt.ua.deti.tqs.roadrunnerbackend.controllers.AuthController;
 import pt.ua.deti.tqs.roadrunnerbackend.model.auth.LoginRequest;
 import pt.ua.deti.tqs.roadrunnerbackend.model.auth.LoginResponse;
 import pt.ua.deti.tqs.roadrunnerbackend.model.auth.RegisterRequest;

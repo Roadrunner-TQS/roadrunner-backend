@@ -5,8 +5,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pt.ua.deti.tqs.roadrunnerbackend.data.PackageRepository;
 import pt.ua.deti.tqs.roadrunnerbackend.data.StateRepository;
-import pt.ua.deti.tqs.roadrunnerbackend.model.Package;
-import pt.ua.deti.tqs.roadrunnerbackend.model.State;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Status;
 
 import java.util.List;
