@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -46,4 +48,16 @@ public class Package {
                 !this.status.equals(Status.DENIED) && !this.status.equals(Status.FORGOTTEN);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Package aPackage = (Package) o;
+        return id != null && Objects.equals(id, aPackage.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
