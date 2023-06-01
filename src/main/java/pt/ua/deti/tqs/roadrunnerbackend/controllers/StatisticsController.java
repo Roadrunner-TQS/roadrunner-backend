@@ -21,19 +21,19 @@ public class StatisticsController {
 	@GetMapping("/packages_state")
 	@PreAuthorize("@authService.isAdmin(#token)")
 	public ResponseEntity<Object> getPackageStateStatistics(@RequestHeader("Authorization") String token) {
-		return null;
+		return new ResponseEntity<>(statisticsService.getStatesOfPackages(), null, 200);
 	}
 
 	@GetMapping("/packages_by_pickup")
 	@PreAuthorize("@authService.isAdmin(#token)")
 	public ResponseEntity<Object> getPackagesByPickupStatistics(@RequestHeader("Authorization") String token) {
-		return null;
+		return new ResponseEntity<>(statisticsService.getPackagesByPickUpLocation(), null, 200);
 	}
 
 	@GetMapping("/other_stats")
 	@PreAuthorize("@authService.isAdmin(#token)")
 	public ResponseEntity<Object> getOtherStatistics(@RequestHeader("Authorization") String token) {
-		return null;
+		return new ResponseEntity<>(statisticsService.getOtherStatistics(), null, 200);
 	}
 
 }
