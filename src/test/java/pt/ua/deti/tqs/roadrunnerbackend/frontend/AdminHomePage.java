@@ -28,6 +28,9 @@ public class AdminHomePage {
     @FindBy(xpath = "/html/body/div[1]/div/div[1]/button")
     private WebElement addShopButton;
 
+    @FindBy(xpath = "/html/body/div/div/div/div[2]/table/tbody/tr[1]")
+    private WebElement firstPickupPoint;
+
     public AdminHomePage(WebDriver driver) {
          PageFactory.initElements(driver,this);
     }

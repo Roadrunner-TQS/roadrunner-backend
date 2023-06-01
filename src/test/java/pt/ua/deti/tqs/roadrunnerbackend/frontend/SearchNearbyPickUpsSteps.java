@@ -2,6 +2,7 @@ package pt.ua.deti.tqs.roadrunnerbackend.frontend;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -21,8 +22,6 @@ public class SearchNearbyPickUpsSteps {
 
     private AdminHomePage adminHomePage;
 
-
-
     @Before
     public void setup() {
         driver = WebDriverManager.firefoxdriver().create();
@@ -32,7 +31,7 @@ public class SearchNearbyPickUpsSteps {
 
     @Given("I am logged in as an admin")
     public void iAmLoggedInAsAnAdmin() {
-        driver.get("http://localhost:8085/signin");
+        driver.get("http://localhost:5173/signin");
         signInPage.fillEmail("admin1@example.com");
         signInPage.fillPassword("admin123");
         signInPage.submit();
@@ -48,7 +47,12 @@ public class SearchNearbyPickUpsSteps {
         wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/packages"));
         adminHomePage.clickPickupPointTab();
         wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/pickups"));
-        wait.wait(1000);
+        Thread.sleep(1000);
         adminHomePage.enterCity(city);
+    }
+
+    @Then("I should see a list of pickup points")
+    public void iShouldSeeAListOfPickupPoints() {
+
     }
 }

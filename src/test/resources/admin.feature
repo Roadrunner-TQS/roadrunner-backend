@@ -6,7 +6,7 @@ Feature: Admin Interaction
     Given I am logged in as an admin
     And I am in the pickup point management page
     When I search for pickup points in "Aveiro"
-#    Then I should see a list of pickup points
+    Then I should see a list of pickup points
 
   Scenario: See All the Packages Present at Each Pickup Location
     Given I am logged in as an admin
