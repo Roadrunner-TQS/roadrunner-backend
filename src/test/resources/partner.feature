@@ -35,10 +35,14 @@ Feature: Register a new Pickup Point
     Given I am in Signup page
     When I change to Sign in page
     Then I should see the form to register a new user
-    When I fill the form with valid data
+    When I fill the form to register with the following information:
+        | email | password | first_name | last_name |
+        | client@roadrunner.com | 123456 | Client | Roadrunner |
     And I click on the submit button
     Then I should see the form to register a new pickup point
-    When I fill the form with valid data
+    When I fill the form pickup point with the following information:
+        | phone | name | address | city | Latitude | Longitude | Longitude |
+        | 123456 | Pickup Point | 1234 Roadrunner St | Acme | 123456 | 123456 | 123456 |
     And I click on the submit button
     Then I should see the message sucessfully registered
 
