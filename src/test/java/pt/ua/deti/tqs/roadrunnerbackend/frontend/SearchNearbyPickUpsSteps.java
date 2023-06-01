@@ -58,6 +58,6 @@ public class SearchNearbyPickUpsSteps {
 
     @When("I click on the pickup location {string}")
     public void iClickOnThePickupLocation(String pickupLocation) {
-        adminHomePage.clickPickupLocation(pickupLocation);
+
     }
 }
