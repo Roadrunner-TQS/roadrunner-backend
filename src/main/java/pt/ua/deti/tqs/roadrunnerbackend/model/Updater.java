@@ -22,7 +22,6 @@ public class Updater {
     }
 
     @Scheduled(cron = "0 0/1 * 1/1 * ?")
-    //                     ^ Mudar aqui os min
     public void updateAVAILABLE() {
         log.info("Updater -- Update -- request received");
         List<Package> packagesAVAILABLE = packagesRepository.findAllByStatus(Status.AVAILABLE);
@@ -41,7 +40,6 @@ public class Updater {
         }
     }
     @Scheduled(cron = "0 0/2 * 1/1 * ?")
-    //                     ^ Mudar aqui os min
     public void updateSHIPPING() {
         List<Package> packagesSHIPPING = packagesRepository.findAllByStatus(Status.SHIPPING);
         for (Package p : packagesSHIPPING) {
