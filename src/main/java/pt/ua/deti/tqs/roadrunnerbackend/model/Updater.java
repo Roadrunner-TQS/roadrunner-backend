@@ -23,7 +23,7 @@ public class Updater {
 
     @Scheduled(cron = "0 0/1 * 1/1 * ?")
     //                     ^ Mudar aqui os min
-    public void update() {
+    public void updateAVAILABLE() {
         log.info("Updater -- Update -- request received");
         List<Package> packagesAVAILABLE = packagesRepository.findAllByStatus(Status.AVAILABLE);
         for (Package p : packagesAVAILABLE) {
@@ -39,7 +39,10 @@ public class Updater {
             }
             log.info("Updater -- Update -- packages AVAILABLE updated");
         }
-
+    }
+    @Scheduled(cron = "0 0/2 * 1/1 * ?")
+    //                     ^ Mudar aqui os min
+    public void updateSHIPPING() {
         List<Package> packagesSHIPPING = packagesRepository.findAllByStatus(Status.SHIPPING);
         for (Package p : packagesSHIPPING) {
             long time = System.currentTimeMillis() - p.getTimestamp();
