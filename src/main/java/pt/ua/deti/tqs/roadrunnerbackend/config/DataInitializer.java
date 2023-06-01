@@ -38,6 +38,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.info("DataInitializer started");
+
         if (customerRepository.count() == 0) {
             log.info("No customers found, creating some...");
             List<Customer> customers = new ArrayList<>();
@@ -114,7 +115,7 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.saveAll(users);
             log.info("Users created");
         }
-        
+
         if(packageRepository.count()==0){
             log.info("No packages found, creating some...");
 

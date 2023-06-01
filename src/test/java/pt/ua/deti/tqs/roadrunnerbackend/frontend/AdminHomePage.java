@@ -68,10 +68,4 @@ public class AdminHomePage {
     }
 
     public boolean isPackageTabDisplayed() {return firstPickupPoint.isDisplayed();}
-
-
-
-
-
-
 }
