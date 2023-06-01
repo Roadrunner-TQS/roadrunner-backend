@@ -67,6 +67,8 @@ public class AdminHomePage {
         return citySearchBar;
     }
 
+    public boolean isPackageTabDisplayed() {return firstPickupPoint.isDisplayed();}
+
 
 
 

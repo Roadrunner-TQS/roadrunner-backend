@@ -12,6 +12,7 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.endsWith;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchNearbyPickUpsSteps {
 
@@ -43,16 +44,20 @@ public class SearchNearbyPickUpsSteps {
     }
 
     @When("I search for pickup points in {string}")
-    public void iSearchForPickupPointsIn(String city) throws InterruptedException {
+    public void iSearchForPickupPointsIn(String city) {
         wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/packages"));
         adminHomePage.clickPickupPointTab();
         wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/pickups"));
-        Thread.sleep(1000);
         adminHomePage.enterCity(city);
     }
 
     @Then("I should see a list of pickup points")
     public void iShouldSeeAListOfPickupPoints() {
+        assertTrue(adminHomePage.isPackageTabDisplayed());
+    }
 
+    @When("I click on the pickup location {string}")
+    public void iClickOnThePickupLocation(String pickupLocation) {
+        adminHomePage.clickPickupLocation(pickupLocation);
     }
 }

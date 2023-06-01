@@ -35,7 +35,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8085", "http://192.168.160.227:8085"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://192.168.160.227:8085"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
