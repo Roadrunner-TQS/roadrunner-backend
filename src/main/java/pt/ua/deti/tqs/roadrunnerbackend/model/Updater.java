@@ -27,7 +27,7 @@ public class Updater {
         List<Package> packagesAVAILABLE = packagesRepository.findAllByStatus(Status.AVAILABLE);
         for (Package p : packagesAVAILABLE) {
             long time = System.currentTimeMillis() - p.getTimestamp();
-            if (time > 1000 * 60) { // 1 min
+            if (time > 1000 * 30) { // 1 min
                 p.setStatus(Status.FORGOTTEN);
                 p.setTimestamp(System.currentTimeMillis());
                 packagesRepository.save(p);
@@ -44,7 +44,7 @@ public class Updater {
         List<Package> packagesSHIPPING = packagesRepository.findAllByStatus(Status.SHIPPING);
         for (Package p : packagesSHIPPING) {
             long time = System.currentTimeMillis() - p.getTimestamp();
-            if (time > 1000 * 60) { // 1 min
+            if (time > 1000 * 60 * 2) { // 1 min
                 p.setStatus(Status.INTRANSIT);
                 p.setTimestamp(System.currentTimeMillis());
                 packagesRepository.save(p);
