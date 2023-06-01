@@ -91,6 +91,7 @@ public class ShopService {
         stateRepository.save(state);
         pack.getStates().add(state);
         pack.setStatus(Status.valueOf(newState));
+        pack.sort();
         packageRepository.save(pack);
         log.info("BookStoreService -- updatePackage -- Success");
         return true;
