@@ -32,7 +32,7 @@ public class SearchNearbyPickUpsSteps {
 
     @Given("I am logged in as an admin")
     public void iAmLoggedInAsAnAdmin() {
-        driver.get("http://localhost:8085/signin");
+        driver.get("http://localhost:5173/signin");
         signInPage.fillEmail("admin1@example.com");
         signInPage.fillPassword("admin123");
         signInPage.submit();
