@@ -34,6 +34,7 @@ public class Updater {
                 State state = new State(UUID.randomUUID(), System.currentTimeMillis(), Status.FORGOTTEN);
                 stateRepository.save(state);
                 p.getStates().add(state);
+                p.sort();
                 packagesRepository.save(p);
             }
             log.info("Updater -- Update -- packages AVAILABLE updated");
@@ -51,6 +52,7 @@ public class Updater {
                 State state = new State(UUID.randomUUID(), System.currentTimeMillis(), Status.INTRANSIT);
                 stateRepository.save(state);
                 p.getStates().add(state);
+                p.sort();
                 packagesRepository.save(p);
             }
             log.info("Updater -- Update -- packages SHIPPING updated");

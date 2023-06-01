@@ -8,10 +8,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Status;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -46,6 +43,10 @@ public class Package {
     public boolean canBeUpdated() {
         return !this.status.equals(Status.CANCELLED) && !this.status.equals(Status.RETURNED) &&
                 !this.status.equals(Status.DENIED) && !this.status.equals(Status.FORGOTTEN);
+    }
+
+    public void sort() {
+        states.sort(Comparator.comparing(State::getTimestamp));
     }
 
     @Override
