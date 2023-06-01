@@ -33,7 +33,7 @@ public class SearchNearbyPickUpsSteps {
 
     @Given("I am logged in as an admin")
     public void iAmLoggedInAsAnAdmin() {
-        driver.get("http://localhost:5173/signin");
+        driver.get("http://localhost:8085/signin");
         signInPage.fillEmail("admin1@example.com");
         signInPage.fillPassword("admin123");
         signInPage.submit();
@@ -46,9 +46,9 @@ public class SearchNearbyPickUpsSteps {
 
     @When("I search for pickup points in {string}")
     public void iSearchForPickupPointsIn(String city) {
-        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/packages"));
+        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/packages"));
         adminHomePage.clickPickupPointTab();
-        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/pickups"));
+        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/pickups"));
         adminHomePage.enterCity(city);
     }
 
