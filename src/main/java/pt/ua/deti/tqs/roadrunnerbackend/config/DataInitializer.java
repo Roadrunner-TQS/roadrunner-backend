@@ -2,7 +2,6 @@ package pt.ua.deti.tqs.roadrunnerbackend.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import pt.ua.deti.tqs.roadrunnerbackend.data.*;
 import pt.ua.deti.tqs.roadrunnerbackend.model.Package;
@@ -38,7 +37,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.info("DataInitializer started");
-
         if (customerRepository.count() == 0) {
             log.info("No customers found, creating some...");
             List<Customer> customers = new ArrayList<>();
@@ -82,40 +80,59 @@ public class DataInitializer implements CommandLineRunner {
             log.info("No users found, creating some...");
 
             List<User> users = new ArrayList<>();
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775a"), encoder.encode("admin123"),
-                    "admin1@example.com", "Maria", "Silva", Roles.ROLE_ADMIN, null));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775b"), encoder.encode("user123"), "user1@example.com",
+            User user1 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775a"), "admin123",
+                    "admin1@example.com", "Maria", "Silva", Roles.ROLE_ADMIN, null);
+            user1.setPassword(user1.getPassword());
+            users.add(user1);
+            User user2 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775b"), "user123", "user1@example.com",
                     "João", "Santos", Roles.ROLE_PARTNER, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775c"), encoder.encode("user123"), "user2@example.com",
-                    "Diogo", "Martins", Roles.ROLE_PARTNER, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775b")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775d"), encoder.encode("user123"), "user3@example.com",
+                    .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null));
+            user2.setPassword(user2.getPassword());
+            users.add(user2);
+            User user3 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775c"), "user123", "user2@example.com",
+                    "Diogo", "Martins", Roles.ROLE_PARTNER, pickUpLocationRepository.
+                    findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775b")).orElse(null));
+            user3.setPassword(user3.getPassword());
+            users.add(user3);
+            User user4 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775d"), "user123", "user3@example.com",
                     "Rui", "Gonçalves", Roles.ROLE_PARTNER, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775c")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775e"), encoder.encode("user123"), "user4@example.com",
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775c")).orElse(null));
+            user4.setPassword(user4.getPassword());
+            users.add(user4);
+            User user5 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775e"), "user123", " user4@example.com",
                     "André", "Ramos", Roles.ROLE_NOT_VERIFIED, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775d")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775f"), encoder.encode("user123"), "user5@example.com",
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775d")).orElse(null));
+            user5.setPassword(user5.getPassword());
+            users.add(user5);
+            User user6 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa775f"), "user123","user5@example.com",
                     "Tomás", "Pereira", Roles.ROLE_NOT_VERIFIED, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775e")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7760"), encoder.encode("user123"), "user6@example.com",
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775e")).orElse(null));
+            user6.setPassword(user6.getPassword());
+            users.add(user6);
+            User user7 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7760"), "user123", "user6@example.com",
                     "Gonçalo", "Fernandes", Roles.ROLE_PARTNER, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775f")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7761"), encoder.encode("user123"), "user7@example.com",
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775f")).orElse(null));
+            user7.setPassword(user7.getPassword());
+            users.add(user7);
+            User user8 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7761"), "user123","user7@example.com",
                     "Tiago", "Costa", Roles.ROLE_PARTNER, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7760")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7762"), encoder.encode("user123"), "user8@example.com",
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7760")).orElse(null));
+            user8.setPassword(user8.getPassword());
+            users.add(user8);
+            User user9 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7762"), "user123", "user8@example.com",
                     "Rafael", "Silva", Roles.ROLE_PARTNER, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7761")).orElse(null)));
-            users.add(new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ab7762"), encoder.encode("user123"), "user9@example.com",
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7761")).orElse(null));
+            user9.setPassword(user9.getPassword());
+            users.add(user9);
+            User user10 = new User(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5aa7763"), "user123", "user9@example.com",
                     "Francisco", "Sousa", Roles.ROLE_NOT_VERIFIED, pickUpLocationRepository
-                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7762")).orElse(null)));
+                            .findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee7762")).orElse(null));
+            user10.setPassword(user10.getPassword());
+            users.add(user10);
             userRepository.saveAll(users);
             log.info("Users created");
         }
-
+        
         if(packageRepository.count()==0){
             log.info("No packages found, creating some...");
 
@@ -137,7 +154,7 @@ public class DataInitializer implements CommandLineRunner {
 
             Package pack3 = new Package(UUID.fromString("42d183d5-3f8e-4877-8a69-0195e51d89a7"), new ArrayList<>(),
                                 customerRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775c")).orElse(null),
-                                pickUpLocationRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775c")).orElse(null),
+                                pickUpLocationRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null),
                                 shopRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775c")).orElse(null),
                                 System.currentTimeMillis(), Status.AVAILABLE);
 
@@ -156,7 +173,7 @@ public class DataInitializer implements CommandLineRunner {
 
             Package pack5 = new Package(UUID.fromString("59457f4a-30e5-4ae9-b4e5-c87a7bfcde86"), new ArrayList<>(),
                     customerRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775b")).orElse(null),
-                    pickUpLocationRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775e")).orElse(null),
+                    pickUpLocationRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null),
                     shopRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null),
                     System.currentTimeMillis(), Status.DELIVERED);
 
@@ -168,7 +185,7 @@ public class DataInitializer implements CommandLineRunner {
 
             Package pack6 = new Package(UUID.fromString("a6e03c59-71db-4a63-9e4f-7fd0526e3fb0"), new ArrayList<>(),
                     customerRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null),
-                    pickUpLocationRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null),
+                    pickUpLocationRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775b")).orElse(null),
                     shopRepository.findById(UUID.fromString("6c84fb90-12c4-11e1-840d-7b25c5ee775a")).orElse(null),
                     System.currentTimeMillis(), Status.DENIED);
             pack6.getStates().add(new State(UUID.randomUUID(), System.currentTimeMillis(), Status.PENDING));
