@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pt.ua.deti.tqs.roadrunnerbackend.model.enums.Roles;
 
@@ -44,12 +44,12 @@ public class User {
     private PickUpLocation pickUpLocation;
 
     public void setPassword(String password) {
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
         this.password = encoder.encode(password);
     }
 
     public boolean checkPassword(String password) {
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(password, this.password);
     }
 
