@@ -34,7 +34,7 @@ public class AdminHomePage {
     @FindBy(xpath = "/html/body/div[1]/div/div[1]/button")
     private WebElement addShopButton;
 
-    @FindBy(xpath = "/html/body/div/div/div/div[2]/table/tbody/tr[1]")
+    @FindBy(xpath = "/html/body/div/div/div/div[2]/table/tbody/tr[7]/td[1]/a")
     private WebElement firstPickupPoint;
 
     @FindBy(xpath = "//p[contains(text(),'Accept')]")
@@ -58,6 +58,9 @@ public class AdminHomePage {
     @FindBy(xpath = "/html/body/div/div/div/div[1]/div[1]/div/div/h2")
     private WebElement dataStats;
 
+    @FindBy(xpath = "//p[contains(text(),'Delete')]")
+    private WebElement deleteShopButton;
+
 
     public AdminHomePage(WebDriver driver) {
         this.driver = driver;
@@ -80,6 +83,9 @@ public class AdminHomePage {
     public void clickShopsTab() {
         shopsTab.click();
     }
+    public boolean shopstabDisplayed() {
+        return shopsTab.isDisplayed();
+    }
 
     public void clickStatsTab() {
         statsTab.click();
@@ -87,10 +93,6 @@ public class AdminHomePage {
 
     public void clickAddShopButton() {
         addShopButton.click();
-    }
-
-    public WebElement getCitySearchBarIsDiplayed() {
-        return citySearchBar;
     }
 
     public boolean isPackageTabDisplayed() {return firstPickupPoint.isDisplayed();}
@@ -142,5 +144,17 @@ public class AdminHomePage {
 
     public boolean isStatsDisplayed() {
         return dataStats.isDisplayed();
+    }
+
+    public void selectPackage() {
+        firstPickupPoint.click();
+    }
+
+    public boolean isPackageDetailsDisplayed() {
+        return driver.findElement(By.xpath("/html/body/div/div/div/div/div")).isDisplayed();
+    }
+
+    public void clickRemoveShopButton() {
+        deleteShopButton.click();
     }
 }

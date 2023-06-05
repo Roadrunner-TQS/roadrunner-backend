@@ -14,7 +14,6 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchNearbyPickUpsSteps {
-
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -39,14 +38,13 @@ public class SearchNearbyPickUpsSteps {
         signInPage.submit();
     }
 
-    @Given("I am logged in as an partner")
-    public void iAmLoggedInAsAnPartner() {
+    @Given("I am logged in as a partner")
+    public void iAmLoggedInAsAPartner() {
         driver.get("http://localhost:8085/signin");
         signInPage.fillEmail("user2@example.com");
         signInPage.fillPassword("user123");
         signInPage.submit();
-        partnerHomePage = new PartnerHomePage(driver);
-        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/packages"));
+        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/packages"));
     }
 
     @And("I am in the pickup point management page")
@@ -71,7 +69,6 @@ public class SearchNearbyPickUpsSteps {
         adminHomePage.clickShopsTab();
         wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/shops"));
     }
-
 
     @When("I search for pickup points in {string}")
     public void iSearchForPickupPointsIn(String city) {
@@ -99,6 +96,13 @@ public class SearchNearbyPickUpsSteps {
         assertTrue(adminHomePage.isPackageTabDisplayed());
     }
 
+    @Then("I should see the partner dashboard")
+    public void iShouldSeeThePartnerDashboard() {
+        partnerHomePage = new PartnerHomePage(driver);
+        partnerHomePage.clickPackageTab();
+        wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/packages"));
+        assertTrue(partnerHomePage.isPackageTabDisplayed());
+    }
     @Then("I should see the new partner in the list of shops")
     public void iShouldSeeTheNewPartnerInTheListOfShops() {
         assertTrue(adminHomePage.isPackageTabDisplayed());
@@ -111,14 +115,9 @@ public class SearchNearbyPickUpsSteps {
 
    @Given("I have an order")
     public void iHaveAnOrder() {
-       wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:5173/packages"));
+       wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/packages"));
        partnerHomePage.clickPackageTab();
-   }
 
-   @And("I click on the remove button of the partner shop {string}")
-    public void iClickOnTheRemoveButtonOfThePartnerShop(String shop) {
-       wait.until(driver -> driver.getCurrentUrl().equals("http://localhost:8085/shops"));
-       // TODO: implement
    }
 
     @When("I click on the accept button of the pickup point")
@@ -174,5 +173,49 @@ public class SearchNearbyPickUpsSteps {
     @Then("I should see the statistics")
     public void iShouldSeeTheStatistics() {
         assertTrue(adminHomePage.isStatsDisplayed());
+    }
+
+    @When("I select the package")
+    public void iSelectThePackage() {
+        adminHomePage.selectPackage();
+    }
+
+    @Then("I should see the package details")
+    public void iShouldSeeThePackageDetails() {
+        assertTrue(adminHomePage.isPackageDetailsDisplayed());
+    }
+
+    @And("I should see the order status as {string}")
+    public void iShouldSeeTheOrderStatusAs(String status){
+        assertEquals(status, partnerHomePage.getPackageStatus(status));
+        assertNotEquals(0, partnerHomePage.numberOfPackages(status));
+    }
+
+    @When("I checkin the order")
+    public void iCheckinTheOrder() {
+        partnerHomePage.clickChangeStatusButton();
+        partnerHomePage.clickAcceptButton();
+    }
+
+    @When("I checkout the order")
+    public void iCheckoutTheOrder() {
+        partnerHomePage.clickChangeStatusButton();
+        partnerHomePage.clickCheckoutButton();
+    }
+
+    @When("I return the order")
+    public void iReturnTheOrder() {
+        partnerHomePage.clickChangeStatusButton();
+        partnerHomePage.clickReturnButton();
+    }
+
+    @When("I click on the remove button of the partner shop")
+    public void iClickOnTheRemoveButtonOfThePartnerShop() {
+        adminHomePage.clickRemoveShopButton();
+    }
+
+    @Then("I should not see the partner shop in the list of partner shops")
+    public void iShouldNotSeeThePartnerShopInTheListOfPartnerShops() {
+        assertTrue(adminHomePage.shopstabDisplayed());
     }
 }

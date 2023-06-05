@@ -13,20 +13,18 @@ Feature: Admin Interaction
     When I select the pickup point "Papelaria Criativa"
     Then I should see a list of packages
 
-#  Scenario: Add a new partner shop
-#    Given I am logged in as an admin
-#    And I am in the partner shop management page
-#    When I click on the add partner button
-#    And I fill the form with the following information:
-#      | Name | Address | City | Latitude | Longitude |
-#      | Papelaria Criativa | Rua do Comercio, 3810-200 Aveiro | Aveiro | 40.6405 | -8.6538 |
-#    And I should see the new partner in the list of shops
+  Scenario: See one package and track it
+    Given I am logged in as an admin
+    And  I am in the package management page
+    When I select the package
+    Then I should see the package details
 
-#  Scenario: Remove a partner shop
-#    Given I am logged in as an admin
-#    And I am in the partner shop management page
-#    When I click on the remove button of the partner shop "Papelaria Criativa"
-#    Then I should not see the partner shop "Papelaria Criativa" in the list of shops
+
+  Scenario: Remove a partner shop
+    Given I am logged in as an admin
+    And I am in the partner shop management page
+    When I click on the remove button of the partner shop
+    Then I should not see the partner shop in the list of partner shops
 
 
   Scenario: Accept a new pickup point

@@ -31,8 +31,4 @@ public class SignInPage {
     public void submit() {
         submit.click();
     }
-
-
-
-
 }
