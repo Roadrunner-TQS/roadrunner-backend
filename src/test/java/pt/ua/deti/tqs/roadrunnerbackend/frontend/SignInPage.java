@@ -1,8 +1,8 @@
 package pt.ua.deti.tqs.roadrunnerbackend.frontend;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class SignInPage {
@@ -31,8 +31,4 @@ public class SignInPage {
     public void submit() {
         submit.click();
     }
-
-
-
-
 }
