@@ -1,0 +1,18 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Build and Deploy
+        run: |
+          docker build -t localhost:5000/rr-backend .
+      - name: Push to Docker Registry
+        run: |
+          docker push localhost:5000/rr-backend
